@@ -3,38 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Tickets, Program 6</title>
+    <script src="https://unpkg.com/vue@next"></script>  
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="index.html">Home</a>
-        <a class="navbar-brand" href="25over.html">25mph or more over</a>
-    </nav>
-    <h1>Tickets July 4, 2014, Minneapolis/St. Paul</h1>
-    <br>
-    <div id="app">
-        <div v-for="ticket in tickets" :key="ticket.tid">
-            {{ ticket }}
+    <div class="container">
+        <nav class="navbar navbar-inverse">
+        <div class="navbar-header">
+             <a class="navbar-brand" href="#">Program6</a>
         </div>
+        <div>
+             <ul class="nav navbar-nav">
+                <li class="active"><a href="index.html">All Tickets</a></li>
+                <li><a href="25over.html">25mph or more over</a></li>
+             </ul>
+       </div>
+       </nav>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-   <script>
-    new Vue({
-        el: '#app',
-        data: {
-            tickets: []
+    <div id="tickets1Table">
+    <h1>Tickets July 4, 2014, Minneapolis/St. Paul</h1>
+    <table class="table table-striped table-bordered">
+        <tr><th>TicketID</th> <th>Time</th> <th>Speed</th> <th>Miles Over</th> <th>Gender</th></tr>
+        <tr v-for = "ticket in tickets1"> 
+            <td>{{ticket.tid}}</td> <td>{{ticket.stop_time}}</td> <td>{{ticket.posted_speed}}</td> <td>{{ticket.actual_speed - ticket.posted_speed}}</td> <td>{{ticket.violator_sex}}</td>
+        </tr>
+    </table>
+    </div>
+<script>
+    let app1 = Vue.createApp({  
+        data(){
+            return {
+                tickets1: [],
+            }
         },
-        mounted() {
-
-            fetch('tickets1.json')
-                .then(response => response.json())
-                .then(data => this.tickets = data)
-                .catch(error => console.error('Error loading data:', error));
-        }
-    });
+        created(){  
+            this.getJson()
+        },
+        
+        methods: {
+            async getJson(){
+                const response = await fetch('tickets1.json')
+                this.tickets1 = await response.json()
+            },
+            
+            }    
+    })
+    app1.mount("#tickets1Table")
 </script>
-
-</body>
 </html>
